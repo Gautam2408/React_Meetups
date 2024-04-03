@@ -34,7 +34,7 @@ generate a page for this meetup ID dynamically on the server for the incoming re
 */
 
 export async function getStaticPaths() {
-  const client = await MongoClient.connect("mongodb://127.0.0.1:27017");
+  const client = await MongoClient.connect("mongodb://0.0.0.0/");
   const db = client.db();
 
   const meetupsCollection = db.collection("meetups");
@@ -57,7 +57,7 @@ export async function getStaticProps(context) {
   const meetupId = context.params.meetupId;
 
   //fetch data for a single meetup
-  const client = await MongoClient.connect("mongodb://0.0.0.0/0");
+  const client = await MongoClient.connect("mongodb://0.0.0.0/");
   const db = client.db();
 
   const meetupsCollection = db.collection("meetups");

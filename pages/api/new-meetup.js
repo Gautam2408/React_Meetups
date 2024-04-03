@@ -12,7 +12,7 @@ export default async function handler(req, res) {
     // now this code should never run on client's browser(ie. frontend) as it
     // would expose our private information
     // we have also given name of db as meetups after mongodb.net/
-    const client = await MongoClient.connect("mongodb://0.0.0.0/0");
+    const client = await MongoClient.connect("mongodb://0.0.0.0/");
     const db = client.db();
 
     const meetupsCollection = db.collection("meetups");
