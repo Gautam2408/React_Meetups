@@ -29,12 +29,18 @@ for all the meetup ID values users might be entering at runtime.
 fallback key tells NextJS whether your paths array contains all supported parameter values or just 
 some of them. If you set fall back to false, you say that your paths contains all supported meetup 
 ID values. That means that if the user enters anything that's not supported here, for example, M3
-he or she would see a 404 error. If you set fall back to true on the other hand, NextJS would try to 
-generate a page for this meetup ID dynamically on the server for the incoming request.
+he or she would see a 404 error. If you set fall back to true/blocking on the other hand, NextJS 
+would try to  generate a page for this meetup ID dynamically on the server for the incoming request.
+Now the difference between true and blocking then is that, with true, it would immediately return 
+an empty page, and then pull down the dynamically generated content once that's done. So you need 
+to handle that case that the page does not have the data yet. With blocking, the user will not see 
+anything until the page was pre-generated,
 */
 
 export async function getStaticPaths() {
-  const client = await MongoClient.connect("mongodb://0.0.0.0/");
+  const client = await MongoClient.connect(
+    "mongodb+srv://gautam:snellslaw7@cluster0.x7sgg65.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  );
   const db = client.db();
 
   const meetupsCollection = db.collection("meetups");
@@ -45,7 +51,7 @@ export async function getStaticPaths() {
   client.close();
 
   return {
-    fallback: false,
+    fallback: "blocking",
     paths: meetups.map((meetup) => ({
       params: { meetupId: meetup._id.toString() },
     })),
@@ -57,7 +63,9 @@ export async function getStaticProps(context) {
   const meetupId = context.params.meetupId;
 
   //fetch data for a single meetup
-  const client = await MongoClient.connect("mongodb://0.0.0.0/");
+  const client = await MongoClient.connect(
+    "mongodb+srv://gautam:snellslaw7@cluster0.x7sgg65.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+  );
   const db = client.db();
 
   const meetupsCollection = db.collection("meetups");
