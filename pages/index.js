@@ -44,7 +44,7 @@ export async function getStaticProps() {
   // instead of directly executing this mongodb we could have send a fetch request to the route
   // same as we did while adding new meetup. But we don't want to add extra overhead of doing
 
-  const client = await MongoClient.connect("mongodb://127.0.0.1:27017");
+  const client = await MongoClient.connect("mongodb://0.0.0.0/0");
   const db = client.db();
 
   const meetupsCollection = db.collection("meetups");
